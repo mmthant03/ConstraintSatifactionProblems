@@ -1,5 +1,6 @@
 package ItemBag;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ItemBag {
@@ -8,6 +9,7 @@ public class ItemBag {
     public HashMap<Character, Integer> bagValue;
     public int lowerLimit;
     public int upperLimit;
+    public ArrayList<Constraint> constraints;
 
     public ItemBag(int lowerLimit, int upperLimit) {
         itemWeight = new HashMap<>();
@@ -22,6 +24,10 @@ public class ItemBag {
 
     public void addValue(char item, int value) {
         if(this.bagValue.get(item) == null) this.bagValue.put(item, value);
+    }
+
+    public void addConstraints(Rule rule, ArrayList<Character> consts) {
+        this.constraints.add(new Constraint(rule, consts));
     }
 
 
