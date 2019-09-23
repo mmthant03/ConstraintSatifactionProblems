@@ -1,15 +1,15 @@
-package Bag;
+package ItemBag;
 
 import java.util.HashMap;
 
-public class Bag {
+public class ItemBag {
 
     public HashMap<Character, Integer> itemWeight;
     public HashMap<Character, Integer> bagValue;
     public int lowerLimit;
     public int upperLimit;
 
-    public Bag(int lowerLimit, int upperLimit) {
+    public ItemBag(int lowerLimit, int upperLimit) {
         itemWeight = new HashMap<>();
         bagValue = new HashMap<>();
         this.lowerLimit = lowerLimit;
