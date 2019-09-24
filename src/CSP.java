@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import ItemBag.ItemBag;
+import ItemBag.Rule;
 
 
 //Robert Dutile & Myo Min Thant
@@ -26,9 +27,16 @@ public class CSP {
         ArrayList<String> bagNames = new ArrayList<String>();
         ArrayList<Integer> capacities = new ArrayList<Integer>();
         
+        ArrayList<Character> uiCons = new ArrayList<Character>();
+        ArrayList<Character> ueCons = new ArrayList<Character>();
+        ArrayList<Character> beCons = new ArrayList<Character>();
+        ArrayList<Character> bneCons = new ArrayList<Character>();
+        ArrayList<Character> miCons = new ArrayList<Character>();
+        
         int upperLimit = 0;
         int lowerLimit = 0;
         
+        int k = 0;
         
         //read file
         try {
@@ -77,7 +85,11 @@ public class CSP {
                 
                 String[] splitLine = line.split(" ");
                 
-                //read unary inclusive constraints
+                // read unary inclusive restraints
+                
+                for(k = 0; k < splitLine.length; k++) {
+                	uiCons.add(Character.valueOf(splitLine[k].charAt(0)));
+                }
             }
             while((line = br.readLine()) != null) {
                 if(line.contains("####")) {
@@ -87,6 +99,9 @@ public class CSP {
                 String[] splitLine = line.split(" ");
                 
                 //read unary exclusive constraints
+                for(k = 0; k < splitLine.length; k++) {
+                	ueCons.add(Character.valueOf(splitLine[k].charAt(0)));
+                }
             }
             while((line = br.readLine()) != null) {
                 if(line.contains("####")) {
@@ -96,6 +111,9 @@ public class CSP {
                 String[] splitLine = line.split(" ");
                 
                 //read binary equals constraints
+                for(k = 0; k < splitLine.length; k++) {
+                	beCons.add(Character.valueOf(splitLine[k].charAt(0)));
+                }
             }
             while((line = br.readLine()) != null) {
                 if(line.contains("####")) {
@@ -105,12 +123,18 @@ public class CSP {
                 String[] splitLine = line.split(" ");
                 
                 //read binary not equals constraints
+                for(k = 0; k < splitLine.length; k++) {
+                	bneCons.add(Character.valueOf(splitLine[k].charAt(0)));
+                }
             }
             while((line = br.readLine()) != null) {
                 
                 String[] splitLine = line.split(" ");
                 
                 //read mutual inclusive constraints
+                for(k = 0; k < splitLine.length; k++) {
+                	miCons.add(Character.valueOf(splitLine[k].charAt(0)));
+                }
             }
             
         } catch(Exception e) {
@@ -127,6 +151,26 @@ public class CSP {
         
         for(int j = 0; j < bagNames.size(); j++) {
         	itemBag.addValue(bagNames.get(j).charAt(0), capacities.get(j).intValue());
+        }
+        
+        if(uiCons.size() > 0) {
+        	itemBag.addConstraints(Rule.UnaryInc, uiCons);
+        }
+        
+        if(ueCons.size() > 0) {
+        	itemBag.addConstraints(Rule.UnaryExc, ueCons);
+        }
+        
+        if(beCons.size() > 0) {
+        	itemBag.addConstraints(Rule.BinaryEq, beCons);
+        }
+        
+        if(bneCons.size() > 0) {
+        	itemBag.addConstraints(Rule.BinaryNEq, bneCons);
+        }
+        
+        if(miCons.size() > 0) {
+        	itemBag.addConstraints(Rule.MutualInc, miCons);
         }
 
         
