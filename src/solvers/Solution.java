@@ -24,6 +24,10 @@ public class Solution {
 		isFailure = true;
 	}
 	
+	public int numInBag(Object key) {
+		return bagContents.get(key).size();
+	}
+	
 	
 
 }
