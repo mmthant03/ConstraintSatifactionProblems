@@ -59,6 +59,15 @@ public class ItemBag {
         }
     }
 
+    public boolean hasConstraint(Character c) {
+        if (this.constraints != null) {
+            for (Constraint con : this.constraints) {
+                if (con.constraints.contains(c)) return true;
+            }
+        }
+        return false;
+    }
+
 
 
 }
