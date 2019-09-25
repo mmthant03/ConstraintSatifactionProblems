@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 import ItemBag.Constraint;
@@ -225,22 +227,152 @@ public class CSP {
         }
     	return workingSol;
     }
-    /*
+    
     public boolean isComplete(Solution checkSol, ItemBag itemBag) {
     	if(checkSol.isFailure) {
     		return false;
     	}
     	Constraint checker;
     	int l = 0;
+    	Set bagKeys = checkSol.bagContents.keySet();
+    	Object[] bags = bagKeys.toArray();
+    	
     	//check bag limits
-    	for(l = 0; l < itemBag.bagValue.size(); l++) {
-    		itemBag.bagValue.
+    	for(l = 0; l < bags.length; l++) {
+    		int amountInBag = checkSol.numInBag(bags[l]);
+    		if(amountInBag < itemBag.lowerLimit) {
+    			return false;
+    		} else if(amountInBag > itemBag.upperLimit) {
+    			return false;
+    		}
     	}
+    	
+    	//check for duplicates:
+    	ArrayList<Character> items = new ArrayList<Character>();
+    	for(Map.Entry mapElement : checkSol.bagContents.entrySet()) {
+    		ArrayList<Character> holder = (ArrayList<Character>) mapElement.getValue();
+    		for(Character c : holder) {
+    			if(items.contains(c)) {
+    				return false;
+    			} else {
+    				items.add(c);
+    			}
+    		}
+    	}
+    	
+    	//check constraints.
     	for(l = 0; l < itemBag.constraints.size(); l++) {
     		checker = itemBag.constraints.get(l);
-    		//switch
+    		if(checker.constraints.size() > 0) {
+    			ArrayList<Character> conArray = checker.constraints;
+        		switch(checker.rule) {
+    				case UnaryInc:
+    					for(int n = 0; n < conArray.size(); n++) {
+    						Character itemChar = conArray.get(n);
+    						ArrayList<Character> validBags = new ArrayList<Character>();
+    						for(int o = n; o < conArray.size(); o++) {
+    							if(Character.isUpperCase(conArray.get(o))) {
+    								for(Map.Entry<Character, ArrayList<Character>> mapElement : checkSol.bagContents.entrySet()) {
+    									if(!(validBags.contains(mapElement.getKey())) && mapElement.getValue().contains(itemChar)) {
+    										return false;
+    									}
+    								}
+    								n = o;
+    								break;
+    							} else if(o == conArray.size() - 1) {
+    								for(Map.Entry<Character, ArrayList<Character>> mapElement : checkSol.bagContents.entrySet()) {
+    									if(!(validBags.contains(mapElement.getKey())) && mapElement.getValue().contains(itemChar)) {
+    										return false;
+    									}
+    								}
+    								n = o;
+    								break;
+    							} else {
+    								validBags.add(conArray.get(o));
+    							}
+    						}
+    					}
+    					break;
+    					
+    				case UnaryExc:
+    					for(int n = 0; n < conArray.size(); n++) {
+    						Character itemChar = conArray.get(n);
+    						ArrayList<Character> validBags = new ArrayList<Character>();
+    						for(int o = n; o < conArray.size(); o++) {
+    							if(Character.isUpperCase(conArray.get(o))) {
+    								for(Map.Entry<Character, ArrayList<Character>> mapElement : checkSol.bagContents.entrySet()) {
+    									if(validBags.contains(mapElement.getKey()) && mapElement.getValue().contains(itemChar)) {
+    										return false;
+    									}
+    								}
+    								n = o;
+    								break;
+    							} else if(o == conArray.size() - 1) {
+    								for(Map.Entry<Character, ArrayList<Character>> mapElement : checkSol.bagContents.entrySet()) {
+    									if(!(validBags.contains(mapElement.getKey())) && mapElement.getValue().contains(itemChar)) {
+    										return false;
+    									}
+    								}
+    								n = o;
+    								break;
+    							} else {
+    								validBags.add(conArray.get(o));
+    							}
+    						}
+    					}
+    					break;
+    					
+    				case BinaryEq:
+    					for(int n = 0; n < conArray.size(); n = n + 2) {
+    						Character item1 = conArray.get(n);
+    						Character item2 = conArray.get(n + 1);
+    						for(Map.Entry<Character, ArrayList<Character>> mapElement : checkSol.bagContents.entrySet()) {
+    							ArrayList<Character> holdingArray = mapElement.getValue();
+    							if((holdingArray.contains(item1) && !holdingArray.contains(item2)) || (!holdingArray.contains(item1) && holdingArray.contains(item2))) {
+    								return false;
+    							}
+    						}
+    					}
+    					break;
+    					
+    				case BinaryNEq:
+    					for(int n = 0; n < conArray.size(); n = n + 2) {
+    						Character item1 = conArray.get(n);
+    						Character item2 = conArray.get(n + 1);
+    						for(Map.Entry<Character, ArrayList<Character>> mapElement : checkSol.bagContents.entrySet()) {
+    							ArrayList<Character> holdingArray = mapElement.getValue();
+    							if(holdingArray.contains(item1) && holdingArray.contains(item2)) {
+    								return false;
+    							}
+    						}
+    					}
+    					break;
+    					
+    				case MutualInc:
+    					for(int n = 0; n < conArray.size(); n = n + 4) {
+    						Character item1 = conArray.get(n);
+    						Character item2 = conArray.get(n + 1);
+    						Character bag1 = conArray.get(n+2);
+    						Character bag2 = conArray.get(n+3);
+    						
+    						if(checkSol.bagContents.get(bag1).contains(item1) && !checkSol.bagContents.get(bag2).contains(item2)) {
+    							return false;
+    						} else if(checkSol.bagContents.get(bag2).contains(item1) && !checkSol.bagContents.get(bag1).contains(item2)) {
+    							return false;
+    						} else if(checkSol.bagContents.get(bag1).contains(item2) && !checkSol.bagContents.get(bag2).contains(item1)) {
+    							return false;
+    						} else if(checkSol.bagContents.get(bag2).contains(item2) && !checkSol.bagContents.get(bag1).contains(item1)) {
+    							return false;
+    						}
+    					}
+    					break;
+        		}
+    		}
     	}
+    	
+    	//if all tests passed:
+    	return true;
     }
-    */
+    
 
 }

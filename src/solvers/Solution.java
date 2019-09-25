@@ -43,6 +43,10 @@ public class Solution {
 		return false;
 	}
 	
+	public int numInBag(Object key) {
+		return bagContents.get(key).size();
+	}
+	
 	
 
 }
