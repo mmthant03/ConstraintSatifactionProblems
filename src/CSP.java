@@ -182,13 +182,13 @@ public class CSP {
     }
     
     //backtracking algorithm
-    /*
+    
     public Solution backTrackSearch(ItemBag itemBag) {
     	Solution initSol = new Solution();
     	Set bagKeys = itemBag.bagValue.keySet();
     	Object[] bags = bagKeys.toArray();
     	for(int m = 0; m < bags.length; m++) {
-    		
+    		initSol.bagContents.put((Character) bags[m], new ArrayList<Character>());
     	}
     	
     	return backTrack(initSol, itemBag);
@@ -200,7 +200,7 @@ public class CSP {
     		return workingSol;
     	}
     }
-    
+    /*
     public boolean isComplete(Solution checkSol, ItemBag itemBag) {
     	if(checkSol.isFailure) {
     		return false;
@@ -213,7 +213,7 @@ public class CSP {
     	}
     	for(l = 0; l < itemBag.constraints.size(); l++) {
     		checker = itemBag.constraints.get(l);
-    		switch
+    		//switch
     	}
     }
     */
