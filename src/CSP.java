@@ -2,9 +2,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Set;
 
+import ItemBag.Constraint;
 import ItemBag.ItemBag;
 import ItemBag.Rule;
+import solvers.Solution;
 
 
 //Robert Dutile & Myo Min Thant
@@ -177,7 +180,42 @@ public class CSP {
 
         
     }
-
-
+    
+    //backtracking algorithm
+    /*
+    public Solution backTrackSearch(ItemBag itemBag) {
+    	Solution initSol = new Solution();
+    	Set bagKeys = itemBag.bagValue.keySet();
+    	Object[] bags = bagKeys.toArray();
+    	for(int m = 0; m < bags.length; m++) {
+    		
+    	}
+    	
+    	return backTrack(initSol, itemBag);
+    }
+    
+    
+    public Solution backTrack(Solution workingSol, ItemBag itemBag) {
+    	if(isComplete(workingSol, itemBag)) {
+    		return workingSol;
+    	}
+    }
+    
+    public boolean isComplete(Solution checkSol, ItemBag itemBag) {
+    	if(checkSol.isFailure) {
+    		return false;
+    	}
+    	Constraint checker;
+    	int l = 0;
+    	//check bag limits
+    	for(l = 0; l < itemBag.bagValue.size(); l++) {
+    		itemBag.bagValue.
+    	}
+    	for(l = 0; l < itemBag.constraints.size(); l++) {
+    		checker = itemBag.constraints.get(l);
+    		switch
+    	}
+    }
+    */
 
 }
