@@ -152,15 +152,15 @@ public class CSP {
         for(int j = 0; j < bagNames.size(); j++) {
         	itemBag.addValue(bagNames.get(j).charAt(0), capacities.get(j).intValue());
         }
-        
+
         if(uiCons.size() > 0) {
         	itemBag.addConstraints(Rule.UnaryInc, uiCons);
         }
-        
+
         if(ueCons.size() > 0) {
         	itemBag.addConstraints(Rule.UnaryExc, ueCons);
         }
-        
+
         if(beCons.size() > 0) {
         	itemBag.addConstraints(Rule.BinaryEq, beCons);
         }
@@ -172,6 +172,8 @@ public class CSP {
         if(miCons.size() > 0) {
         	itemBag.addConstraints(Rule.MutualInc, miCons);
         }
+
+        itemBag.display();
 
         
     }

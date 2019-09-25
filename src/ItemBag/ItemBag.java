@@ -16,6 +16,7 @@ public class ItemBag {
         bagValue = new HashMap<>();
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;
+        this.constraints = new ArrayList<Constraint>();
     }
 
     public void addWeight(char item, int weight) {
@@ -27,7 +28,35 @@ public class ItemBag {
     }
 
     public void addConstraints(Rule rule, ArrayList<Character> consts) {
-        this.constraints.add(new Constraint(rule, consts));
+        Constraint newCon = new Constraint(rule, consts);
+        this.constraints.add(newCon);
+    }
+
+    public void display() {
+        System.out.println("*** Items and their weights ***");
+        for (char item : itemWeight.keySet()) {
+            System.out.println("Item : " + item + ", Weight : " + itemWeight.get(item));
+        }
+        System.out.println();
+
+        System.out.println("*** Bags and their capacities ***");
+        for (char bag : bagValue.keySet()) {
+            System.out.println("Bag : " + bag + ", Capacity : " + bagValue.get(bag));
+        }
+        System.out.println();
+
+        System.out.println("Lower limit : " + this.lowerLimit + "\n");
+        System.out.println("Upper Limit : " + this.upperLimit + "\n");
+
+        if(this.constraints != null) {
+            for (Constraint con : this.constraints) {
+                System.out.println(con.rule);
+                for (char c : con.constraints) {
+                    System.out.print(c + "\t");
+                }
+                System.out.println();
+            }
+        }
     }
 
 
