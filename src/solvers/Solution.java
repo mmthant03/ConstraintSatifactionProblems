@@ -23,6 +23,25 @@ public class Solution {
 	public void setFailure() {
 		isFailure = true;
 	}
+
+	public void addContent(Character key, Character newVal) {
+		if(this.bagContents.get(key) != null) {
+			this.bagContents.get(key).add(newVal);
+		}
+	}
+
+	public void removeContent(Character key, Character item) {
+		if(this.containItem(key, item)) {
+			this.bagContents.get(key).remove(item);
+		}
+	}
+
+	public boolean containItem(Character key, Character item) {
+		if (this.bagContents.get(key) != null && this.bagContents.get(key).contains(item)) {
+			return true;
+		}
+		return false;
+	}
 	
 	
 

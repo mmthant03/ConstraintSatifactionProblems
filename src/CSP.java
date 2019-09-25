@@ -190,7 +190,7 @@ public class CSP {
     	for(int m = 0; m < bags.length; m++) {
     		initSol.bagContents.put((Character) bags[m], new ArrayList<Character>());
     	}
-    	
+
     	return backTrack(initSol, itemBag);
     }
     
@@ -199,6 +199,31 @@ public class CSP {
     	if(isComplete(workingSol, itemBag)) {
     		return workingSol;
     	}
+    	Set b = workingSol.bagContents.keySet();
+    	Object[] bags = b.toArray();
+
+    	for(int k = 0; k < bags.length; k++) {
+    	    char currentBag = (Character) bags[k];
+    	    // get all the items
+            ArrayList<Character> allItems = itemBag.getItems();
+            // for each item, try putting it into the current bag
+            for (char item : allItems) {
+                // The bag cannot contain two same items,
+                // skip if it is the same item
+                if(workingSol.containItem(currentBag, item)) continue;
+                // add the item into the bag
+                workingSol.addContent(currentBag, item);
+                // recursively search for solution
+                Solution newSol = backTrack(workingSol, itemBag);
+                // if the solution ends up with no failure, return that solution
+                if(newSol.isFailure == false) {
+                    return newSol;
+                }
+                // solution has failure, thus remove that item and further prune that item
+                workingSol.removeContent(currentBag, item);
+            }
+        }
+    	return workingSol;
     }
     /*
     public boolean isComplete(Solution checkSol, ItemBag itemBag) {

@@ -1,5 +1,6 @@
 package ItemBag;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,8 +24,24 @@ public class ItemBag {
         if(this.itemWeight.get(item) == null) this.itemWeight.put(item, weight);
     }
 
+    public ArrayList<Character> getBags() {
+        ArrayList<Character> allBags = new ArrayList<>();
+        for (char bag : bagValue.keySet()) {
+            allBags.add(bag);
+        }
+        return allBags;
+    }
+
     public void addValue(char item, int value) {
         if(this.bagValue.get(item) == null) this.bagValue.put(item, value);
+    }
+
+    public ArrayList<Character> getItems() {
+        ArrayList<Character> allItems = new ArrayList<>();
+        for (char item : itemWeight.keySet()) {
+            allItems.add(item);
+        }
+        return allItems;
     }
 
     public void addConstraints(Rule rule, ArrayList<Character> consts) {
