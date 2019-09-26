@@ -90,6 +90,8 @@ public class CSP {
                 
                 upperLimit = Integer.parseInt(splitLine[0]);
                 lowerLimit = Integer.parseInt(splitLine[1]);
+                itemBag.upperLimit = upperLimit;
+                itemBag.lowerLimit = lowerLimit;
             }
             while((line = br.readLine()) != null) {
                 if(line.contains("####")) {
