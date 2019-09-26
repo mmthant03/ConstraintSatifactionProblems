@@ -1,4 +1,5 @@
 package solvers;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,14 +26,20 @@ public class Solution {
 	}
 
 	public void addContent(Character key, Character newVal) {
-		if(this.bagContents.get(key) != null) {
-			this.bagContents.get(key).add(newVal);
+		ArrayList<Character> itemList = this.bagContents.get(key);
+		if(itemList == null) {
+			itemList = new ArrayList<>();
+			itemList.add(newVal);
+			this.bagContents.put(key, itemList);
+		} else {
+			// add if item is not already in list
+			if(!itemList.contains(newVal)) itemList.add(newVal);
 		}
 	}
 
 	public void removeContent(Character key, Character item) {
 		if(this.containItem(key, item)) {
-			this.bagContents.get(key).remove(item);
+			this.bagContents.get(key).remove((item));
 		}
 	}
 
